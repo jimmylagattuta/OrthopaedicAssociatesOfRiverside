@@ -17,6 +17,7 @@
     --blue-light: #004080;
     --grey-light: #dde4ed;
     --grey-dark: #64748b;
+    --violet: rgb(143, 0, 72);
 }
 
 body {
@@ -127,7 +128,7 @@ img {
 
 .fa-map-marker-alt {
     font-size: 30px;
-    color: rgb(243,74, 2);
+    color: rgb(143, 0, 72);
     cursor: pointer;
     z-index: 10;
 }
@@ -152,7 +153,7 @@ img {
 }
 .pagination-arrow .fas {
     font-size: 1rem;
-    color: rgb(243,74, 2);
+    color: rgb(143, 0, 72);
 }
 .pagination-arrow:disabled .fas {
     opacity: 0.7;
@@ -169,7 +170,8 @@ img {
 .map-float-title {
     font-size: 16px;
     margin: 0 0 3px 0;
-    color:rgb(243, 74, 2);
+    color:rgb(143, 0, 72);
+
 }
 
 .map-float-info {
@@ -198,7 +200,7 @@ img {
 }
 
 .map-float-info-container.show-extra {
-    border: 2px solid rgb(218, 145, 0);
+    border: 2px solid rgb(143, 0, 72);
 }
 
 .map-container {
@@ -279,7 +281,7 @@ img {
     min-height: 720px;
     /* background-color: var(--blue); */
     background-color: white;
-    border-bottom: 5px solid #f34a02;
+    border-bottom: 5px solid rgb(143, 0, 72);
 }
 
 .Carousel-container {
@@ -369,10 +371,10 @@ img {
 }
 
 .header-image {
-    width: 300px;
     height: auto; /* This allows the image to be responsive */
     background-size: cover; /* Adjust the background size as needed */
     background-repeat: no-repeat;
+    padding: 25px 0 0 0;
 }
 
 .header-title {
@@ -454,7 +456,7 @@ img {
 }
 
 .nav-link.active {
-    border-bottom: 2px solid rgb(243,74, 2);
+    border-bottom: 2px solid rgb(143, 0, 72);
 }
 
 .nav-link-container:hover > .nav-link {
@@ -668,7 +670,7 @@ img {
     margin: 0px;
     padding: 5px 0px 0px 0px;
     font-weight: 400;
-    border-bottom: 1px solid rgb(243,74, 2); /* Set the color you want for the line */
+    border-bottom: 1px solid rgb(143, 0, 72); /* Set the color you want for the line */
     padding-bottom: 15px; /* Adjust as needed to control the space between the text and the line */
     color: white;
     font-size: 3rem;
@@ -773,7 +775,7 @@ img {
     background-size: contain;
     background-position: top;
     background-attachment: fixed;
-    border-bottom: 5px solid rgb(243,74, 2);
+    border-bottom: 5px solid rgb(143, 0, 72);
     color: #fff;
     padding: 40px;
     position: relative;
@@ -1583,7 +1585,7 @@ display: none;
   margin: 1.6rem;
   border-radius: 8rem;
   border: none;
-  background-color: rgba(243,74, 2, 100%);
+  background-color: rgba(143, 0, 72, 100%);
   color: black;
   align-self: center;
   font-size: 0.9rem;
@@ -1605,7 +1607,7 @@ display: none;
     margin: 1.6rem;
     border-radius: 8rem;
     border: none;
-    background-color: rgba(243,74, 2, 100%);
+    background-color: rgba(143, 0, 72, 100%);
     color: black;
     align-self: center;
     font-size: 0.9rem;
@@ -1641,7 +1643,7 @@ display: none;
   margin: 1.6rem;
   border-radius: 8rem;
   border: none;
-  background-color: rgba(243,74, 2, 100%);
+  background-color: rgba(143, 0, 72, 100%);
   color: black;
   align-self: center;
   font-size: 0.9rem;
@@ -1835,7 +1837,7 @@ display: none;
 }
 
 .home-expertise .fas {
-    color: rgb(243,74, 2);
+    color: rgb(143, 0, 72);
     font-size: 1.8rem;
 }
 
@@ -1957,7 +1959,7 @@ display: none;
 .home-team {
     align-items: center;
     /* background: url(https://i.imgur.com/77LJQ2y.webp) 0 0 no-repeat; */
-    background: rgb(243, 74, 2);
+    background: rgb(143, 0, 72);
     background-position: 50%;
     background-size: cover;
     color: #fff;
@@ -1988,12 +1990,12 @@ display: none;
 
 .home-locations {
     /* background: url(https://i.imgur.com/pP2cSdc.webp) 0 0 no-repeat; */
-    border-bottom: solid 5px rgb(243,74, 2);
+    border-bottom: solid 5px rgb(143, 0, 72);
 }
 
 .location-icon-container {
     /* padding: 40px 0 0 0; */
-    color: rgb(243, 74, 2);
+    color: rgb(143, 0, 72);
     text-align: center;
     display: flex;
     justify-content: space-around;
@@ -2032,7 +2034,7 @@ display: none;
 
 /* REVIEWS */
 .home-reviews {
-    border-top: 5px solid #f34a02;
+    border-top: 5px solid rgb(143, 0, 72);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2070,7 +2072,7 @@ display: none;
     flex-direction: column;
     align-items: center;
     color: var(--white);
-    box-shadow: 0px 0px 6px rgba(243, 74, 2, 50%);
+    box-shadow: 0px 0px 6px rgba(143, 0, 72, 50%);
     border-radius: 4px;
     background-color: #696969	;
 }
@@ -2087,7 +2089,7 @@ display: none;
 
 .review-info .fa {
     position: absolute;
-    color: rgba(243, 74, 2, 100%);
+    color: rgba(143, 0, 72, 100%);
     font-size: 1rem;
 }
 
@@ -2254,7 +2256,7 @@ display: none;
 }
 
 .home-banner:after {
-    background: rgba(243, 74, 2, 0.6);
+    background: rgba(143, 0, 72, 0.6);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(0.1px);
     -webkit-backdrop-filter: blur(0.1px);
@@ -2308,7 +2310,6 @@ display: none;
 }
 
 
-
 @media (min-width: 1025px) {
     .nav-link-container:hover > .submenu {
         display: flex;
@@ -2319,6 +2320,11 @@ display: none;
 @media (max-width: 1650px) {
     .pages-header {
         background-image: url(https://i.imgur.com/V3Vfsqi.webp);
+    }
+}
+@media (max-width: 1360px) {
+    .expertise-name {
+        font-size: 0.8rem;
     }
 }
 @media (max-width: 1295px) {
@@ -2332,6 +2338,12 @@ display: none;
     }
 }
 @media (max-width: 1160px) {
+    .expertise-name {
+        font-size: 0.8rem;
+    }
+    .expertise-item {
+        width: 30%;
+    }
     .header-title {
         display: none;
     }
@@ -2525,6 +2537,9 @@ display: none;
 
 }
 @media (max-width: 1015px) {
+    .expertise-name {
+        font-size: 0.7rem;
+    }
     .about-title {
         /* padding: 55px 0px 0px 0px; */
         font-size: 2.5rem;
@@ -2555,6 +2570,9 @@ display: none;
       }
 }
 @media (max-width: 850px) {
+    .expertise-name {
+        font-size: 0.8rem;
+    }
     .about-container-bottom {
         flex-direction: column;
     }
@@ -2579,6 +2597,9 @@ display: none;
     }
 }
 @media (max-width: 768px) {
+    .expertise-item {
+        width: 100%;
+    }
     #appointment-form {
         height: 100vh;
         width: 100vw;

@@ -40,15 +40,14 @@ const Navbar = () => {
                 <div className='header-image-container'>
                     <Link to='/' className='logo-link'>
                         <img
-                            src='https://i.imgur.com/3FM3KUI.webp'
+                            src='https://i.imgur.com/1M8ZlnK.webp'
                             alt='LA Ortho Associates'
                             className='header-image'
-                            style={{ width: '300px', height: '120px' }}
                         />
 
                     </Link>
                     <div className="header-title-div">
-                        <h1 className="header-title">Los Angeles Orthopedic Surgury Specialists & Advanced Orthopedics</h1>
+                        <h1 className="header-title">Orthopaedic Associates of Riverside</h1>
                     </div>
                 </div>
                 <div className='header-buttons-container'>
