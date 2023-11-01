@@ -4,9 +4,9 @@ const AboutUsComponent = () => {
     return (
         <div className='about-container'>
             <div className='about-container-top'>
-                <h1 className='about-title'>Los Angeles Orthopedic Surgery Specialists</h1>
+                <h1 className='about-title'>Orthopaedic Associates of Riverside</h1>
                 <p className='about-description'>
-                    Orthopedics located in East Los Angeles and Downtown Los Angeles, Los Angeles, San Gabriel Valley, Santa Fe Springs, San Fernando Valley, Tarzana, San Fernando Valley, Encino, Santa Clarita, Newhall, San Gabriel Valley, Montebello and Glendale, CA
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis placerat odio, id tincidunt justo dictum eget. Nunc tincidunt, quam id volutpat dictum, purus odio laoreet tellus, quis tristique odio nisi eget ex. Sed luctus vel ipsum sit amet bibendum. Nullam lacinia tellus a est tincidunt, vel bibendum purus gravida. Fusce feugiat dui nec justo mattis, ut placerat urna gravida. Morbi et nunc eu urna volutpat suscipit. Aenean efficitur eros vel nisi malesuada venenatis. Donec et volutpat libero. Suspendisse feugiat justo non erat bibendum, eget viverra dolor pharetra.
                 </p>
             </div>
             <div className='about-container-bottom'>
@@ -14,16 +14,16 @@ const AboutUsComponent = () => {
                 />
                 <div className='about-container-bottom-right'>
                 <h2 className='about-title-right'>
-                    About Los Angeles Orthopedic Surgery Specialists
+                    About Orthopaedic Associates of Riverside
                 </h2>
                 <p className='about-description-right'>
-                    Los Angeles Orthopedic Surgery Specialists is dedicated to delivering compassionate, high-quality orthopedic care aimed at fostering lifelong well-being for our patients.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis placerat odio, id tincidunt justo dictum eget. Nunc tincidunt, quam id volutpat dictum, purus odio laoreet tellus, quis tristique odio nisi eget ex. Sed luctus vel ipsum sit amet bibendum. Nullam lacinia tellus a est tincidunt, vel bibendum purus gravida. Fusce feugiat dui nec justo mattis, ut placerat urna gravida. Morbi et nunc eu urna volutpat suscipit. Aenean efficitur eros vel nisi malesuada venenatis. Donec et volutpat libero. Suspendisse feugiat justo non erat bibendum, eget viverra dolor pharetra.
                 </p>
                 <p className='about-description-right'>
-                    Our team of experienced medical providers serves patients across the Los Angeles area, with offices located in East Los Angeles, Wilshire, Santa Fe Springs, Tarzana, Encino, Valencia, and Montebello, California.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis placerat odio, id tincidunt justo dictum eget. Nunc tincidunt, quam id volutpat dictum, purus odio laoreet tellus, quis tristique odio nisi eget ex. Sed luctus vel ipsum sit amet bibendum. Nullam lacinia tellus a est tincidunt, vel bibendum purus gravida. Fusce feugiat dui nec justo mattis, ut placerat urna gravida. Morbi et nunc eu urna volutpat suscipit. Aenean efficitur eros vel nisi malesuada venenatis. Donec et volutpat libero. Suspendisse feugiat justo non erat bibendum, eget viverra dolor pharetra.
                 </p>
                 <p className='about-description-right'>
-                    Recognizing that every patient is unique, Los Angeles Orthopedic Surgery Specialists takes a tailored approach to ensure that each individual fully comprehends their condition and personalized treatment plan. Additionally, we provide preventive and podiatric care to enhance patients' comfort and enable more active lifestyles.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis placerat odio, id tincidunt justo dictum eget. Nunc tincidunt, quam id volutpat dictum, purus odio laoreet tellus, quis tristique odio nisi eget ex. Sed luctus vel ipsum sit amet bibendum. Nullam lacinia tellus a est tincidunt, vel bibendum purus gravida. Fusce feugiat dui nec justo mattis, ut placerat urna gravida. Morbi et nunc eu urna volutpat suscipit. Aenean efficitur eros vel nisi malesuada venenatis. Donec et volutpat libero. Suspendisse feugiat justo non erat bibendum, eget viverra dolor pharetra.
                 </p>
                 <div className='about-right-button'>
                     <NavLink className='btn header-button-white' to='/about'>

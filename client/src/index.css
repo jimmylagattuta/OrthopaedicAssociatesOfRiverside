@@ -693,7 +693,7 @@ img {
 .about-container-bottom-left {
     display: flex;
     flex: 1;
-    background-image: url(https://i.imgur.com/thiV4LE.webp);
+    /* background-image: url(https://i.imgur.com/thiV4LE.webp); */
     background-size: cover;
 
     height: 100vh;
