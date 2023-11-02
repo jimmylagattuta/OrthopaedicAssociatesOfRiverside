@@ -479,8 +479,8 @@ export const officesData = [
         fax: '708-442-5670',
         image: 'https://i.imgur.com/r6Cclyu.webp',
         coordinates: {
-            lat: 37.527240,
-            lng: -84.808190,
+            lat: 41.7956315,
+            lng: -87.8867671,
         },
         show: false,
     },
@@ -493,8 +493,8 @@ export const officesData = [
         fax: '708-442-5670',
         image: 'https://i.imgur.com/r6Cclyu.webp',
         coordinates: {
-            lat: 41.794820,
-            lng: -87.770060,
+            lat: 41.79482,
+            lng: -87.7699979,
         },
         show: false,
     }
