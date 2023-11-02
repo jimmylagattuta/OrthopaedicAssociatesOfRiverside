@@ -30,7 +30,10 @@ const Navbar = () => {
             <div className='header-top'>
                 <button
                     className='mobile-menu-button'
-                    onClick={toggleMobileMenu}>
+                    onClick={toggleMobileMenu}
+                    style={{ color: 'white' }}
+                    >
+                    
                     <i
                         className={
                             isMobileMenuopen ? 'fa fa-times' : 'fa fa-bars'
@@ -43,12 +46,10 @@ const Navbar = () => {
                             src='https://i.imgur.com/1M8ZlnK.webp'
                             alt='LA Ortho Associates'
                             className='header-image'
+
                         />
 
                     </Link>
-                    <div className="header-title-div">
-                        <h1 className="header-title">Orthopaedic Associates of Riverside</h1>
-                    </div>
                 </div>
                 <div className='header-buttons-container'>
                     <NavLink className='btn header-button-dark' to='/locations'>

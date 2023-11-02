@@ -13,7 +13,7 @@ const Home = () => {
     const [showMap, setShowMap] = useState(false);
     useEffect(() => {
         const firstImage = new Image();
-        firstImage.src = 'https://i.imgur.com/2seXrrT.webp';
+        firstImage.src = 'https://i.imgur.com/KRQMs5L.webp';
         firstImage.onload = () => {
             setFirstImageLoaded(true);
         };
@@ -43,17 +43,17 @@ const Home = () => {
             <div className='home-hero'>
                 <div className='home-banner'>
                     <div className="banner-title-container">
-                        <h1 style={{ color: 'black' }} className='banner-title'>
-                            {" "}Compassionate{" "}
+                        <h1 style={{ color: 'white', textShadow: '1px 1px 6px black' }} className='banner-title'>
+                            {" "}Orthopaedic{" "}
                         </h1>
-                        <h1 style={{ color: 'black' }} className='banner-title'>
-                            {" "}Orthopedic{" "}
+                        <h1 style={{ color: 'white', textShadow: '1px 1px 6px black' }} className='banner-title'>
+                            {" "}Associates{" "}
                         </h1>
-                        <h1 style={{ color: 'black' }} className='banner-title'>
-                            {" "}Care{" "}
+                        <h1 style={{ color: 'white', textShadow: '1px 1px 6px black' }} className='banner-title'>
+                            {" "}of Riverside{" "}
                         </h1>
                     </div>
-                    <p style={{ color: 'black' }} className='banner-description'>
+                    <p style={{ color: 'white', textShadow: '1px 1px 6px black' }} className='banner-description'>
                         Experienced Medical Professionals With A Personal Touch
                     </p>
                     <div className='banner-buttons'>
@@ -68,7 +68,36 @@ const Home = () => {
                     </div>
                 </div>
                 <ReactBackgroundCarousel>
-
+                    <img
+                        src='https://i.imgur.com/KRQMs5L.webp'
+                        alt='img1'
+                        className='carousel-img'
+                        loading='eager'
+                    />
+                    <img
+                        src='https://i.imgur.com/vuRtxki.webp'
+                        alt='img2'
+                        className='carousel-img'
+                        loading='lazy'
+                    />
+                    <img
+                        src='https://i.imgur.com/oqCqJux.webp'
+                        alt='img3'
+                        className='carousel-img'
+                        loading='lazy'
+                    />
+                    <img
+                        src='https://i.imgur.com/pErxD82.webp'
+                        alt='img4'
+                        className='carousel-img'
+                        loading='lazy'
+                    />
+                    <img
+                        src='https://i.imgur.com/Hu9EIX9.webp'
+                        alt='img5'
+                        className='carousel-img'
+                        loading='lazy'
+                    />
                 </ReactBackgroundCarousel>
             </div>
             <AboutUsComponent />

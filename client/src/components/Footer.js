@@ -7,7 +7,7 @@ const Footer = () => {
             <div className='container'>
                 <div className='footer-grid'>
                     <div className='footer-item word-wrap-container'>
-                        <div className='footer-word-wrap'>Los Angeles Orthopedic Surgery Specialists</div>
+                        <div className='footer-word-wrap'>Orthopaedic Associates of Riverside</div>
                     </div>
                     <div className='footer-item'>
                         <Link
