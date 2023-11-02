@@ -71,7 +71,7 @@ function ChatBox(props) {
           
     const url =
       process.env.NODE_ENV === 'production'
-        ? 'https://la-orthos-bdc751615c67.herokuapp.com/api/v1/pull_google_places_cache'
+        ? 'https://ortho-associates-of-riverside-12d6d06d6fbb.herokuapp.com/api/v1/pull_google_places_cache'
         : 'http://localhost:3000/api/v1/pull_google_places_cache';
   
     // Include the CSRF token in the headers of your fetch request
@@ -182,7 +182,7 @@ function ChatBox(props) {
       agreeToTerms: state.agreeToTerms,
     };
     try {
-      const response = await fetch('https://la-orthos-bdc751615c67.herokuapp.com/api/v1/send-email', {
+      const response = await fetch('https://ortho-associates-of-riverside-12d6d06d6fbb.herokuapp.com/api/v1/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
