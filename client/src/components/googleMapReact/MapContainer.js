@@ -130,6 +130,11 @@ const FloatingOfficeInfo = ({
 };
 
 const InfoWindow = ({ place, handleInfoWindowClose, markerSelected }) => {
+    console.log('InfoWindow handleInfoWindowClose place', place);
+    console.log('InfoWindow handleInfoWindowClose handleInfoWindowClose', handleInfoWindowClose);
+    console.log('InfoWindow handleInfoWindowClose markerSelected', markerSelected);
+    console.log('InfoWindow handleInfoWindowClose visibleOffices', visibleOffices);
+
     return (
         <div
             className={`${
@@ -248,6 +253,7 @@ const MapContainer = () => {
     //     }
     //     insertBefore.call(head, newElement, referenceElement);
     // };
+    console.log('MapContainer offices', offices);
 
     const handleInfoWindowClose = () => {
         setOffices(
