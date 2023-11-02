@@ -238,7 +238,7 @@ const MapContainer = () => {
     const [zoomed, setZoomed] = useState(null);
     const [offices, setOffices] = useState(officesData);
     const [markerSelected, setMarkerSelected] = useState(null);
-    const [zoomLevel, setZoomLevel] = useState(12);
+    const [zoomLevel, setZoomLevel] = useState(11);
 
     // const head = document.getElementsByTagName('head')[0];
     // const insertBefore = head.insertBefore;
@@ -324,7 +324,7 @@ const MapContainer = () => {
             />
             {offices.length > 0 && (
                 <GoogleMapReact
-                    defaultZoom={12}
+                    defaultZoom={11}
                     defaultCenter={{ lat: 41.794820, lng: -87.790060 }}
                     center={centered}
                     zoom={zoomed}
