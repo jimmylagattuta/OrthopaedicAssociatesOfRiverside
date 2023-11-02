@@ -324,7 +324,7 @@ const MapContainer = () => {
             />
             {offices.length > 0 && (
                 <GoogleMapReact
-                    defaultZoom={10}
+                    defaultZoom={9}
                     defaultCenter={{ lat: 41.794820, lng: -87.770060 }}
                     center={centered}
                     zoom={zoomed}
