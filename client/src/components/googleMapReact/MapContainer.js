@@ -309,7 +309,7 @@ const MapContainer = () => {
     const resetSelection = () => {
         console.log('resetSelection setZoomed(zoomLevel)');
         setZoomed(zoomLevel);
-        setCentered({ lat: 34.09223, lng: -118.29368 });
+        setCentered({ lat: 41.794820, lng: -87.770060 });
         setMarkerSelected(null);
         handleInfoWindowClose();
     };
