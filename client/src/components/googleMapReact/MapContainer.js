@@ -61,6 +61,7 @@ const FloatingOfficeInfo = ({
                 </button>
             </div>
             {visibleOffices.map((place, index) => {
+                console.log('place', place);
                 return (
                     <div
                         key={index + startIdx}
