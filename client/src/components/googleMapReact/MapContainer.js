@@ -47,7 +47,6 @@ const FloatingOfficeInfo = ({
 
     const startIdx = currentPage * officesPerPage;
     const visibleOffices = offices.slice(startIdx, startIdx + officesPerPage);
-    console.log('InfoWindow handleInfoWindowClose visibleOffices', visibleOffices);
 
     return (
         <div className='map-float-menu'>
@@ -132,9 +131,6 @@ const FloatingOfficeInfo = ({
 };
 
 const InfoWindow = ({ place, handleInfoWindowClose, markerSelected }) => {
-    console.log('InfoWindow handleInfoWindowClose place', place);
-    console.log('InfoWindow handleInfoWindowClose handleInfoWindowClose', handleInfoWindowClose);
-    console.log('InfoWindow handleInfoWindowClose markerSelected', markerSelected);
 
     return (
         <div
@@ -211,6 +207,13 @@ const Marker = ({
     id,
     markerSelected,
 }) => {
+    console.log('Marker show', show);
+    console.log('Marker place', place);
+    console.log('Marker handleInfoWindowClose', handleInfoWindowClose);
+    console.log('Marker handleHover', handleHover);
+    console.log('Marker id', id);
+    console.log('Marker markerSelected', markerSelected);
+
     return (
         <>
             <i
