@@ -465,8 +465,8 @@ export const officesData = [
         fax: '708-442-5670',
         image: 'https://i.imgur.com/r6Cclyu.webp',
         coordinates: {
-            lat: 40.145340,
-            lng: -74.706300,
+            lat: 41.8312612,
+            lng: -87.804197,
         },
         show: false,
     },
