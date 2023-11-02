@@ -60,7 +60,6 @@ const FloatingOfficeInfo = ({
                 </button>
             </div>
             {visibleOffices.map((place, index) => {
-                console.log('place', place);
                 return (
                     <div
                         key={index + startIdx}
@@ -131,7 +130,6 @@ const FloatingOfficeInfo = ({
 };
 
 const InfoWindow = ({ place, handleInfoWindowClose, markerSelected }) => {
-
     return (
         <div
             className={`${
@@ -207,13 +205,6 @@ const Marker = ({
     id,
     markerSelected,
 }) => {
-    console.log('Marker show', show);
-    console.log('Marker place', place);
-    console.log('Marker handleInfoWindowClose', handleInfoWindowClose);
-    console.log('Marker handleHover', handleHover);
-    console.log('Marker id', id);
-    console.log('Marker markerSelected', markerSelected);
-
     return (
         <>
             <i
@@ -257,7 +248,6 @@ const MapContainer = () => {
     //     }
     //     insertBefore.call(head, newElement, referenceElement);
     // };
-    console.log('MapContainer offices', offices);
 
     const handleInfoWindowClose = () => {
         setOffices(
@@ -319,7 +309,7 @@ const MapContainer = () => {
     const resetSelection = () => {
         console.log('resetSelection setZoomed(zoomLevel)');
         setZoomed(zoomLevel);
-        setCentered({ lat: 41.794820, lng: -87.770060 });
+        setCentered({ lat: 34.09223, lng: -118.29368 });
         setMarkerSelected(null);
         handleInfoWindowClose();
     };
@@ -334,8 +324,8 @@ const MapContainer = () => {
             />
             {offices.length > 0 && (
                 <GoogleMapReact
-                    defaultZoom={7}
-                    defaultCenter={{ lat: 41.794820, lng: -87.770060 }}
+                    defaultZoom={10}
+                    defaultCenter={{ lat: 34.09223, lng: -118.29368 }}
                     center={centered}
                     zoom={zoomed}
                     bootstrapURLKeys={{

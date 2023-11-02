@@ -12,7 +12,7 @@ const Locations = () => {
                         All locations have parking and parking for individuals
                         with disabilities available.
                     </h3>
-                    <i style={{ color: 'rgba(243, 74, 2, 100%)', alignSelf: 'baseline', paddingLeft: '10px', fontSize: '1.5rem' }} class="fas fa-wheelchair"></i>
+                    <i style={{ color: 'var(--violet)', alignSelf: 'baseline', paddingLeft: '10px', fontSize: '1.5rem' }} class="fas fa-wheelchair"></i>
                 </div>
             </div>
             <div className='location-map-section'>
