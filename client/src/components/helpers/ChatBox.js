@@ -46,6 +46,7 @@ function ChatBox(props) {
   useEffect(() => {
     // Load and initialize reCAPTCHA
     const loadRecaptchaScript = () => {
+      console.log('process.env.REACT_APP_RECAPTCHA', process.env.REACT_APP_RECAPTCHA);
       const script = document.createElement('script');
       script.src = `https://www.google.com/recaptcha/enterprise.js?render=${process.env.REACT_APP_RECAPTCHA}`;
       script.async = true;
