@@ -33,18 +33,7 @@
     <link rel="preload" href="https://i.imgur.com/pErxD82.webp" as="image" />
     <link rel="preload" href="https://i.imgur.com/Hu9EIX9.webp" as="image" />
 
-    <head>
-      <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcPefAoAAAAAIdIA0Jv4NwVqvpS7ogoocr7lNVo" async defer></script>
-      <!-- Your code -->
-    </head>
-    <script>
-      function onClick(e) {
-        e.preventDefault();
-        grecaptcha.enterprise.ready(async () => {
-          const token = await grecaptcha.enterprise.execute('6LcPefAoAAAAAIdIA0Jv4NwVqvpS7ogoocr7lNVo', {action: 'LOGIN'});
-        });
-      }
-    </script>
+
     <link
       rel="preload"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -66,6 +55,7 @@
       link.setAttribute('defer', 'true');
       document.head.appendChild(link);
     </script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
     <!-- Google tag (gtag.js) <script async src="https://www.googletagmanager.com/gtag/js?id=G-RYGTF545WK"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());   gtag('config', 'G-RYGTF545WK'); </script> -->
