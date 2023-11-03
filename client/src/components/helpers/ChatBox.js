@@ -45,25 +45,25 @@ function ChatBox(props) {
 
   useEffect(() => {
     // Load and initialize reCAPTCHA
-    const loadRecaptchaScript = () => {
-      console.log('process.env.REACT_APP_RECAPTCHA', process.env.REACT_APP_RECAPTCHA);
-      const script = document.createElement('script');
-      script.src = `https://www.google.com/recaptcha/enterprise.js?render=${process.env.REACT_APP_RECAPTCHA}`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        // Initialize reCAPTCHA with your site key
-        window.grecaptcha.enterprise.ready(() => {
-          window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'submit_form' }).then((token) => {
-            console.log('token again again', token);
-            setState({ ...state, recaptchaToken: token });
-          });
-        });
-      };
-      document.head.appendChild(script);
-    };
+    // const loadRecaptchaScript = () => {
+    //   console.log('process.env.REACT_APP_RECAPTCHA', process.env.REACT_APP_RECAPTCHA);
+    //   const script = document.createElement('script');
+    //   script.src = `https://www.google.com/recaptcha/enterprise.js?render=${process.env.REACT_APP_RECAPTCHA}`;
+    //   script.async = true;
+    //   script.defer = true;
+    //   script.onload = () => {
+    //     // Initialize reCAPTCHA with your site key
+    //     window.grecaptcha.enterprise.ready(() => {
+    //       window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'submit_form' }).then((token) => {
+    //         console.log('token again again', token);
+    //         setState({ ...state, recaptchaToken: token });
+    //       });
+    //     });
+    //   };
+    //   document.head.appendChild(script);
+    // };
 
-    loadRecaptchaScript();
+    // loadRecaptchaScript();
 
     if (!csrfToken) {
       fetchReviews();
