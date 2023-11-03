@@ -64,10 +64,10 @@ function ChatBox(props) {
           });
           const data = await response.json();
           if (data.score < 0.5) {
-            console.log('less than 0.5');
+            console.log('Less than 0.5');
             // Handle suspicious activity (e.g., show a CAPTCHA challenge)
           } else {
-            console.log('above 0.5');
+            console.log('Above 0.5');
             // Proceed with the user's request
           }
         });
