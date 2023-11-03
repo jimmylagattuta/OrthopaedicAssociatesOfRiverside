@@ -53,8 +53,8 @@ function ChatBox(props) {
       script.defer = true;
       script.onload = () => {
         // Initialize reCAPTCHA with your site key
-        grecaptcha.enterprise.ready(async () => {
-          const token = await grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'action_name' });
+        window.grecaptcha.enterprise.ready(async () => {
+          const token = await window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'action_name' });
           const response = await fetch('/verify-recaptcha', {
             method: 'POST',
             headers: {
