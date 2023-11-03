@@ -45,38 +45,38 @@ function ChatBox(props) {
 
   useEffect(() => {
     // Load and initialize reCAPTCHA
-    const loadRecaptchaScript = () => {
-      console.log('process.env.REACT_APP_RECAPTCHA', process.env.REACT_APP_RECAPTCHA);
-      const script = document.createElement('script');
-      script.src = `https://www.google.com/recaptcha/enterprise.js?render=${process.env.REACT_APP_RECAPTCHA}`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        // Initialize reCAPTCHA with your site key
-        window.grecaptcha.enterprise.ready(async () => {
-          const token = await window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'action_name' });
-          const response = await fetch('/verify-recaptcha', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-          });
-          const data = await response.json();
-          if (data.score < 0.5) {
-            console.log('Less than 0.5');
-            // Handle suspicious activity (e.g., show a CAPTCHA challenge)
-          } else {
-            console.log('Above 0.5');
-            // Proceed with the user's request
-          }
-        });
+    // const loadRecaptchaScript = () => {
+    //   console.log('process.env.REACT_APP_RECAPTCHA', process.env.REACT_APP_RECAPTCHA);
+    //   const script = document.createElement('script');
+    //   script.src = `https://www.google.com/recaptcha/enterprise.js?render=${process.env.REACT_APP_RECAPTCHA}`;
+    //   script.async = true;
+    //   script.defer = true;
+    //   script.onload = () => {
+    //     // Initialize reCAPTCHA with your site key
+    //     window.grecaptcha.enterprise.ready(async () => {
+    //       const token = await window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'action_name' });
+    //       const response = await fetch('/verify-recaptcha', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ token }),
+    //       });
+    //       const data = await response.json();
+    //       if (data.score < 0.5) {
+    //         console.log('Less than 0.5');
+    //         // Handle suspicious activity (e.g., show a CAPTCHA challenge)
+    //       } else {
+    //         console.log('Above 0.5');
+    //         // Proceed with the user's request
+    //       }
+    //     });
         
-      };
-      document.head.appendChild(script);
-    };
+    //   };
+    //   document.head.appendChild(script);
+    // };
 
-    loadRecaptchaScript();
+    // loadRecaptchaScript();
 
     if (!csrfToken) {
       fetchReviews();
