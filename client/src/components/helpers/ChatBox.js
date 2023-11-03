@@ -597,6 +597,9 @@ function ChatBox(props) {
                 className='g-recaptcha'
                 sitekey={process.env.REACT_APP_RECAPTCHA} // Use the environment variable
                 onChange={handleSubmitRecaptcha}
+                asyncScriptOnLoad={(response) => {
+                  console.log('response', response);
+                }}
               />
               <div style={{ marginBottom: '0.3rem' }}>
                 {renderErrorRecaptcha(errors.recaptcha)}
