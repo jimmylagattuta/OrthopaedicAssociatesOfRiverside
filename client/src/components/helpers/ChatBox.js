@@ -131,6 +131,7 @@ function ChatBox(props) {
     // Initialize reCAPTCHA with your site key
     window.grecaptcha.enterprise.ready(() => {
       window.grecaptcha.enterprise.execute(process.env.REACT_APP_RECAPTCHA, { action: 'submit_form' }).then((token) => {
+        console.log('initializeRecaptcha', token);
         setState({ ...state, recaptchaToken: token });
       });
     });
