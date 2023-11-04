@@ -62,8 +62,8 @@ const CompanyReviewsPage = () => {
           
             const url =
               process.env.NODE_ENV === 'production'
-                ? 'https://ortho-associates-of-riverside-12d6d06d6fbb.herokuapp.com/api/v1/pull_google_places_cache'
-                : 'http://localhost:3000/api/v1/pull_google_places_cache';
+                ? 'https://ortho-associates-of-riverside-12d6d06d6fbb.herokuapp.com/api/v1/pull_yelp_cache'
+                : 'http://localhost:3000/api/v1/pull_yelp_cache';
           
             // Include the CSRF token in the headers of your fetch request
             const headers = {
