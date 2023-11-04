@@ -45,8 +45,7 @@ class GooglePlacesCached
       end
     
       place_ids = [
-        'EjIzNTMgRSBCdXJsaW5ndG9uIFN0ICMxMDAsIFJpdmVyc2lkZSwgSUwgNjA1NDYsIFVTQSIfGh0KFgoUChIJmXgM8To0DogR84iATk-g77ESAzEwMA',
-        'ChIJmXgM8To0DogR84iATk-g77E'
+        'ChIJJZgawTYxDogR6D8tWYoz1T0'
       ]
     
       http = Net::HTTP.new("maps.googleapis.com", 443)
