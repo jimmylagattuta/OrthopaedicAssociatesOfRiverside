@@ -37,13 +37,8 @@ class GooglePlacesCached
       return updated_reviews
     end
     place_ids = [
-      'ChIJ6wjoflfGwoARIQ4pYyXJCN8',
-      'ChIJo34riQ3GwoARLZD9o-uqI8Y',
-      'ChIJfc-vNJTTwoARtN9DZQQNDRc',
-      'ChIJ1e1EWx7RwoAReCY-TXXbhT4',
-      'ChIJm2ksPQiZwoARG_JhTUiR0pI',
-      'ChIJj3JTtm7BwoARcku_Ur8WuDE',
-      'ChIJsT3iMBWHwoARLfqsCmNi-C0'
+      'EjIzNTMgRSBCdXJsaW5ndG9uIFN0ICMxMDAsIFJpdmVyc2lkZSwgSUwgNjA1NDYsIFVTQSIfGh0KFgoUChIJmXgM8To0DogR84iATk-g77ESAzEwMA',
+      'ChIJmXgM8To0DogR84iATk-g77E'
     ]
     http = Net::HTTP.new("maps.googleapis.com", 443)
     http.use_ssl = true
@@ -60,6 +55,10 @@ class GooglePlacesCached
         place_details = parsed_response['result']
         place_reviews = place_details.present? ? place_details['reviews'] || [] : []
         reviews.concat(place_reviews)
+        puts "*" * 100
+        puts "place_reviews"
+        puts place_reviews.inspect
+        puts "*" * 100
       else
         puts "Failed to retrieve place details for place ID: #{place_id}"
       end
