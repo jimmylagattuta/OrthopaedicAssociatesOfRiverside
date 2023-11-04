@@ -398,12 +398,23 @@ img {
     flex-direction: row;
 
 }
-
+.usa-flag {
+    display: inline-block;
+    font-size: 24px; /* Adjust the size as needed */
+  }
+  
+  .stripes {
+    color: red; /* Red color for stripes */
+  }
+  
+  .stars {
+    color: blue; /* Blue color for stars */
+  }
+  
 .header-image {
     height: auto; /* This allows the image to be responsive */
     background-size: cover; /* Adjust the background size as needed */
     background-repeat: no-repeat;
-    /* padding: 25px 0 0 0; */
 }
 
 .header-title {
@@ -421,6 +432,15 @@ img {
 
 .header-button-yellow:active {
     color: var(--black);
+}
+.navbar-oar-buttons {
+    display: flex;
+}
+
+.navbar-special-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .header-button-dark,
@@ -2763,6 +2783,9 @@ display: none;
 
     .header-buttons-container {
         margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .physician-name.desktop {

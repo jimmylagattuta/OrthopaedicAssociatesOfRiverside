@@ -1,4 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
+
 import { navMenu } from '../data';
 import { useState } from 'react';
 import RequestAppointmentForm from './helpers/RequestAppointmentForm';
@@ -46,21 +47,55 @@ const Navbar = () => {
                             src='https://i.imgur.com/1M8ZlnK.webp'
                             alt='LA Ortho Associates'
                             className='header-image'
-
+                            style={{ width: '200px' }}
                         />
 
                     </Link>
                 </div>
                 <div className='header-buttons-container'>
-                    <NavLink className='btn header-button-dark' to='/locations'>
-                        Call Us
-                    </NavLink>
-                    <a
-                        className='btn header-button-yellow'
-                        onClick={toggleAppointmentForm}
-                    >
-                        Request Appointment
-                    </a>
+                    <div className="navbar-oar-buttons">
+                        <NavLink className='btn header-button-dark' to='/locations'>
+                            Call Us
+                        </NavLink>
+                        <a
+                            className='btn header-button-yellow'
+                            onClick={toggleAppointmentForm}
+                            >
+                            Request Appointment
+                        </a>
+                    </div>
+                    <div className="navbar-special-buttons">
+                        <a href="https://www.facebook.com/orthoriverside" target="_blank">
+                            <i style={{ padding: '10px', fontSize: '1.5rem', color: 'white' }} className="fab fa-facebook"></i>
+                        </a>
+                        <div
+                            onClick={() => console.log('Translate To English')}
+                            style={{ cursor: "pointer", padding: '10px', fontSize: '2rem', alignSelf: 'center' }}
+                            >
+                            <img src="https://i.imgur.com/2TvF7x4.webp" alt="English Flag" />
+                        </div>
+                        <div
+                            onClick={() => console.log('Translate To Polish')}
+                            style={{ cursor: "pointer", padding: '10px', fontSize: '2rem', alignSelf: 'center' }}
+                            >
+                            <img src="https://i.imgur.com/95gzZ96.webp" alt="Polish Flag" />
+                        </div>
+
+                        <div
+                            onClick={() => console.log('Translate To Spanish')}
+                            style={{ cursor: "pointer", padding: '10px', fontSize: '2rem', alignSelf: 'center' }}
+                            >
+                            <img src="https://i.imgur.com/p8KxvS7.webp" alt="Spanish Flag" />
+                        </div>
+                        <div
+                            onClick={() => console.log('Search Button')}
+                            style={{ cursor: "pointer", padding: '10px', fontSize: '1.5rem' }}
+                            >
+                            <i style={{ color: 'white' }} class="fas fa-search"></i>
+                        </div>
+                    </div>
+
+
                     {isAppointmentFormOpen && (
                         <div className="appointment-form-overlay">
                             <RequestAppointmentForm toggleAppointmentForm={toggleAppointmentForm} setShowThankYouMessage={setShowThankYouMessage} />

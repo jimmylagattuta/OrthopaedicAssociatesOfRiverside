@@ -75,7 +75,7 @@ const Home = () => {
                         loading='eager'
                     />
                     <img
-                        src='https://i.imgur.com/vuRtxki.webp'
+                        src='https://i.imgur.com/hl6j14o.webp'
                         alt='img2'
                         className='carousel-img'
                         loading='lazy'
