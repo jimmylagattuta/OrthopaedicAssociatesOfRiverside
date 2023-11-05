@@ -4,9 +4,9 @@ class Api::V1::JobsController < ApplicationController
   end
 
   def pull_yelp_cache
+    csrf_token = form_authenticity_token
     reviews = YelpCached.cached_yelp_reviews
-
-    render json: reviews
+    render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
     puts "Error in pull_yelp_cache: #{e.message}"
     render json: { "error": e.message }
