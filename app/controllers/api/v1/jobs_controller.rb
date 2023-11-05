@@ -9,7 +9,8 @@ class Api::V1::JobsController < ApplicationController
     reviews = []
 
     search_terms.each do |term|
-      reviews += YelpCached.cached_yelp_reviews(term)
+      term_reviews = YelpCached.cached_yelp_reviews(term)
+      reviews.concat(term_reviews) if term_reviews.is_a?(Array)
     end
 
     render json: { reviews: reviews, csrf_token: csrf_token }
