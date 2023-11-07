@@ -7,7 +7,11 @@ class Api::V1::JobsController < ApplicationController
     csrf_token = form_authenticity_token
     aliases = [
       'orthopedic-associates-of-riverside-riverside',
-      # Add more aliases here if needed
+      'orthopedic-associates-of-riverside-chicago',
+      'orthopedic-associates-of-riverside-la-grange',
+      'orthopaedic-associates-of-riverside-riverside',
+      'orthopaedic-associates-of-riverside-chicago',
+      'orthopaedic-associates-of-riverside-la-grange'
     ]
     reviews = YelpCached.cached_yelp_reviews(aliases)
 
