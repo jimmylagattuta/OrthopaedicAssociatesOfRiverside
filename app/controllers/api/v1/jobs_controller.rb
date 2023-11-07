@@ -5,10 +5,13 @@ class Api::V1::JobsController < ApplicationController
 
   def pull_yelp_cache
     csrf_token = form_authenticity_token
-    alias_names = ['orthopedic-associates-of', 'orthopaedic-associates-of']
-    aliases = YelpCached.cached_yelp_aliases(alias_names)
+    aliases = [
+      'orthopedic-associates-of-riverside-riverside',
+      # Add more aliases here if needed
+    ]
+    reviews = YelpCached.cached_yelp_reviews(aliases)
 
-    render json: { aliases: aliases, csrf_token: csrf_token }
+    render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
     puts "Error in search_yelp_for_orthopedic: #{e.message}"
     render json: { "error": e.message }
@@ -20,22 +23,22 @@ class Api::V1::JobsController < ApplicationController
   require 'net/http'
 
   class YelpCached
-    def self.cached_yelp_aliases(alias_names)
+    def self.cached_yelp_reviews(aliases)
       redis = Redis.new(url: ENV['REDIS_URL'])
-      cached_data = redis.get("cached_yelp_aliases_#{alias_names.join('-')}")
-      aliases = JSON.parse(cached_data) if cached_data
+      cached_data = redis.get("cached_yelp_reviews_#{aliases.join('-')}")
+      reviews = JSON.parse(cached_data) if cached_data
 
       if cached_data.present?
-        return aliases
+        return reviews
       end
 
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
 
-      aliases = []
+      reviews = []
 
-      alias_names.each do |alias_name|
-        url = URI("https://api.yelp.com/v3/businesses/search?location=Chicago&location=Riverside&location=La Grange&alias=#{alias_name}")
+      aliases.each do |alias_name|
+        url = URI("https://api.yelp.com/v3/businesses/#{alias_name}")
         request = Net::HTTP::Get.new(url)
         request["Accept"] = 'application/json'
         request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
@@ -52,14 +55,14 @@ class Api::V1::JobsController < ApplicationController
           next
         end
 
-        aliases << alias_name
+        reviews << parsed_response
       end
 
       # Store the retrieved data in the cache
-      redis.set("cached_yelp_aliases_#{alias_names.join('-')}", JSON.generate(aliases))
-      redis.expire("cached_yelp_aliases_#{alias_names.join('-')}", 30.days.to_i)
+      redis.set("cached_yelp_reviews_#{aliases.join('-')}", JSON.generate(reviews))
+      redis.expire("cached_yelp_reviews_#{aliases.join('-')}", 30.days.to_i)
 
-      return aliases
+      return reviews
     rescue StandardError => e
       puts "Error in call_yelp: #{e.message}"
       return { "error": e.message }
