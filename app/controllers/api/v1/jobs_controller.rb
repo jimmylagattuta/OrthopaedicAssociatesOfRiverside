@@ -7,9 +7,9 @@ class Api::V1::JobsController < ApplicationController
     csrf_token = form_authenticity_token
     alias_name = 'orthopedic-associates-of-riverside-riverside' # Set the desired alias here
     puts 1
-    reviews = YelpCached.cached_yelp_reviews(alias_name, 8) # Limit the reviews to 8
+    reviews, cache_cleared = YelpCached.cached_yelp_reviews(alias_name, "8") # Limit the reviews to 8
     puts 2
-    render json: { reviews: reviews, csrf_token: csrf_token }
+    render json: { reviews: reviews, csrf_token: csrf_token, cache_cleared: cache_cleared }
   rescue StandardError => e
     puts 3
     puts "Error in search_yelp_for_orthopedic: #{e.message}" # This is puts 3
@@ -28,8 +28,9 @@ class Api::V1::JobsController < ApplicationController
 
     def self.cached_yelp_reviews(alias_name, review_limit)
       redis = Redis.new(url: ENV['REDIS_URL'])
-      cached_data = redis.get("cached_yelp_reviews_#{alias_name}")
+      cached_data = redis.get("cached_yelp_reviews")
       reviews = JSON.parse(cached_data) if cached_data
+      cache_cleared = false
       puts 4
 
       if cached_data.present?
@@ -51,30 +52,35 @@ class Api::V1::JobsController < ApplicationController
         updated_reviews = JSON.generate(data)
         puts 8
 
-        return updated_reviews
+        # Clear the cache variable
+        redis.del("cached_yelp_reviews_#{alias_name}")
+        cache_cleared = true
+        puts 9
+
+        return updated_reviews, cache_cleared
       end
 
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
-      puts 9
+      puts 10
 
-      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit.to_s}") # Add review_limit to the URL
+      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit}") # Add review_limit to the URL
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
-      puts 10
+      puts 11
 
       response = http.request(request)
       body = response.read_body
       parsed_response = JSON.parse(body)
-      puts 11
+      puts 12
 
-      puts "Yelp API Response for alias '#{alias_name}' reviews:" # This is puts 12
+      puts "Yelp API Response for alias '#{alias_name}' reviews:" # This is puts 13
       puts parsed_response.inspect
 
       if parsed_response["error"]
-        puts "Error: #{parsed_response['error']['description']}" # This is puts 13
-        return { reviews: [] }
+        puts "Error: #{parsed_response['error']['description']}" # This is puts 14
+        return { reviews: [] }, false
       end
 
       # Store the retrieved data in the cache
@@ -83,12 +89,12 @@ class Api::V1::JobsController < ApplicationController
 
       # Limit the reviews to the specified number
       parsed_response['reviews'] = parsed_response['reviews'].take(review_limit)
-      puts 12
+      puts 13
 
-      return parsed_response
+      return parsed_response, cache_cleared
     rescue StandardError => e
-      puts "Error in call_yelp: #{e.message}" # This is puts 14
-      return { "error": e.message }
+      puts "Error in call_yelp: #{e.message}" # This is puts 15
+      return { "error": e.message }, cache_cleared
     end
   end
 end
