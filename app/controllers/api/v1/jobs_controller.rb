@@ -10,10 +10,10 @@ class Api::V1::JobsController < ApplicationController
     reviews, cache_cleared = YelpCached.cached_yelp_reviews(alias_name, 8) # Limit the reviews to 8
     puts 2
     render json: { reviews: reviews, csrf_token: csrf_token, cache_cleared: cache_cleared }
-  rescue StandardError => e
-    puts 3
-    puts "Error in search_yelp_for_orthopedic: #{e.message}" # This is puts 3
-    render json: { "error": e.message }
+  # rescue StandardError => e
+    # puts 3
+    # puts "Error in search_yelp_for_orthopedic: #{e.message}" # This is puts 3
+    # render json: { "error": e.message }
   end
 
   require 'redis'
@@ -92,9 +92,9 @@ class Api::V1::JobsController < ApplicationController
       puts 13
     
       return [parsed_response, cache_cleared]
-    rescue StandardError => e
-      puts "Error in call_yelp: #{e.message}" # This is puts 15
-      return [{ "error": e.message }, cache_cleared]
+    # rescue StandardError => e
+      # puts "Error in call_yelp: #{e.message}" # This is puts 15
+      # return [{ "error": e.message }, cache_cleared]
     end
   end
 end
