@@ -81,6 +81,7 @@ const CompanyReviewsPage = () => {
               })
               .then((data) => {
                 // Check if data.reviews is a string
+                console.log('data', data);
                 if (typeof data.reviews === 'string') {
                   // Parse the JSON string into an array
                   const reviewsArray = JSON.parse(data);
