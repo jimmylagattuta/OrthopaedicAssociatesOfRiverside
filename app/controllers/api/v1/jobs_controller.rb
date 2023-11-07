@@ -7,7 +7,7 @@ class Api::V1::JobsController < ApplicationController
     csrf_token = form_authenticity_token
     alias_name = 'orthopedic-associates-of-riverside-riverside' # Set the desired alias here
     puts 1
-    reviews, cache_cleared = YelpCached.cached_yelp_reviews(alias_name, "8") # Limit the reviews to 8
+    reviews, cache_cleared = YelpCached.cached_yelp_reviews(alias_name, 8) # Limit the reviews to 8
     puts 2
     render json: { reviews: reviews, csrf_token: csrf_token, cache_cleared: cache_cleared }
   rescue StandardError => e
@@ -60,11 +60,41 @@ class Api::V1::JobsController < ApplicationController
         return [updated_reviews, cache_cleared] # Return both reviews and cache_cleared as an array
       end
     
-      # Rest of your code...
+      http = Net::HTTP.new("api.yelp.com", 443)
+      http.use_ssl = true
+      puts 10
     
-      # If you didn't clear the cache, you can return false for cache_cleared
+      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit}") # Add review_limit to the URL
+      request = Net::HTTP::Get.new(url)
+      request["Accept"] = 'application/json'
+      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+      puts 11
+    
+      response = http.request(request)
+      body = response.read_body
+      parsed_response = JSON.parse(body)
+      puts 12
+    
+      puts "Yelp API Response for alias '#{alias_name}' reviews:" # This is puts 13
+      puts parsed_response.inspect
+    
+      if parsed_response["error"]
+        puts "Error: #{parsed_response['error']['description']}" # This is puts 14
+        return [parsed_response, cache_cleared]
+      end
+    
+      # Store the retrieved data in the cache
+      redis.set("cached_yelp_reviews", JSON.generate(parsed_response))
+      redis.expire("cached_yelp_reviews", 30.days.to_i)
+    
+      # Limit the reviews to the specified number
+      parsed_response['reviews'] = parsed_response['reviews'].take(review_limit)
+      puts 13
+    
       return [parsed_response, cache_cleared]
+    rescue StandardError => e
+      puts "Error in call_yelp: #{e.message}" # This is puts 15
+      return [{ "error": e.message }, cache_cleared]
     end
-    
   end
 end
