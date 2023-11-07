@@ -3,7 +3,7 @@ class Api::V1::JobsController < ApplicationController
     render json: "Midland Orthopedic Group " * 1000
   end
 
-  def pull_yelp_cache
+  def search_yelp_for_orthopedic
     csrf_token = form_authenticity_token
     search_term = 'orthopedic'
     reviews = YelpCached.cached_yelp_reviews(search_term)
@@ -71,10 +71,11 @@ class Api::V1::JobsController < ApplicationController
       return businesses
     rescue StandardError => e
       puts "Error in call_yelp: #{e.message}"
-      render json: { "error": e.message }
+      return { "error": e.message }
     end
   end
 end
+
 
 
 
