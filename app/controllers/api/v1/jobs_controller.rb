@@ -5,7 +5,7 @@ class Api::V1::JobsController < ApplicationController
 
   def pull_yelp_cache
     csrf_token = form_authenticity_token
-    alias_name = 'orthopedic-associates-of-riverside-riverside'
+    alias_name = 'orthopedic-associates-of'
     reviews = YelpCached.cached_yelp_reviews(alias_name)
 
     render json: { reviews: reviews, csrf_token: csrf_token }
