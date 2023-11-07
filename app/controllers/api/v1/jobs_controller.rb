@@ -45,7 +45,7 @@ class Api::V1::JobsController < ApplicationController
         puts 6
     
         # Limit the reviews to the specified number
-        data['reviews'] = data['reviews'].take(review_limit)
+        data['reviews'] = data['reviews'].take(review_limit.to_i)
         puts 7
     
         # Convert the updated data back to a JSON string
