@@ -43,7 +43,7 @@ class Api::V1::JobsController < ApplicationController
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
     
-      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews")
+      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews") # Corrected URI
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
@@ -70,6 +70,6 @@ class Api::V1::JobsController < ApplicationController
       puts "Error in call_yelp: #{e.message}"
       return { "error": e.message }
     end
-    
+        
   end
 end
