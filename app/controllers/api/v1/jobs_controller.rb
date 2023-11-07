@@ -5,27 +5,32 @@ class Api::V1::JobsController < ApplicationController
 
   def pull_yelp_cache
     csrf_token = form_authenticity_token
-    business_alias = 'orthopedic-associates-of-riverside-riverside' # Specify the business alias here
-    reviews = YelpCached.cached_yelp_reviews(business_alias)
+    search_terms = ['Orthopedic Associates of Riverside', 'Orthopaedic Associates of Riverside']
+    reviews = []
+
+    search_terms.each do |term|
+      term_reviews = YelpCached.cached_yelp_reviews(term)
+      reviews.concat(term_reviews) if term_reviews.is_a?(Array)
+    end
 
     render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
-    puts "Error in search_yelp_for_orthopedic: #{e.message}"
+    puts "Error in pull_yelp_cache: #{e.message}"
     render json: { "error": e.message }
   end
 
   require 'redis'
   require 'json'
+  require 'uri'
   require 'net/http'
 
   class YelpCached
     def self.remove_user_by_name(users, name)
       users.reject! { |user| user['user']['name'] == name }
     end
-
-    def self.cached_yelp_reviews(business_alias)
+    def self.cached_yelp_reviews(search_term)
       redis = Redis.new(url: ENV['REDIS_URL'])
-      cached_data = redis.get("cached_yelp_reviews_#{business_alias}")
+      cached_data = redis.get('cached_yelp_reviews')
       reviews = JSON.parse(cached_data) if cached_data
 
       if cached_data.present?
@@ -41,54 +46,197 @@ class Api::V1::JobsController < ApplicationController
         return updated_reviews
       end
 
+      # Modify the search_terms array to include specific location information
+      search_terms = [
+        'Orthopedic Associates of Riverside Chicago',
+        'Orthopedic Associates of Riverside Riverside, IL'
+      ]
+
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
 
-      url = URI("https://api.yelp.com/v3/businesses/#{business_alias}")
-      request = Net::HTTP::Get.new(url)
-      request["Accept"] = 'application/json'
-      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+      reviews = []
 
-      response = http.request(request)
-      body = response.read_body
-      parsed_response = JSON.parse(body)
+      search_terms.each do |term|
+        url = URI("https://api.yelp.com/v3/businesses/search?term=#{URI.encode(term)}")
+        request = Net::HTTP::Get.new(url)
+        request["Accept"] = 'application/json'
+        request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+        request["limit"] = "3"
+        response = http.request(request)
+        body = response.read_body
+        parsed_response = JSON.parse(body)
 
-      puts "Yelp API Response for business alias '#{business_alias}':"
-      puts parsed_response.inspect
+        if parsed_response["error"]
+          puts "Error: #{parsed_response['error']['description']}"
+          next
+        end
 
-      if parsed_response["error"]
-        puts "Error: #{parsed_response['error']['description']}"
-        return { reviews: [] }
+        # Assuming you want to retrieve the first matching business
+        first_business = parsed_response["businesses"].first
+
+        if first_business
+          business_location = {
+            location_one: first_business['location'],
+            location_two: first_business['location']['address1']
+          }
+
+          url = URI("https://api.yelp.com/v3/businesses/#{first_business['id']}/reviews")
+          request = Net::HTTP::Get.new(url)
+          request["Accept"] = 'application/json'
+          request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+          request["limit"] = "3"
+          response = http.request(request)
+          body = response.read_body
+          parsed_response = JSON.parse(body)
+
+          if parsed_response["error"]
+            puts "Location: #{first_business['location']}"
+            puts "Error: #{parsed_response['error']['description']}"
+            next
+          end
+
+          parsed_reviews = parsed_response["reviews"]
+          next if parsed_reviews.empty?
+
+          parsed_reviews.each do |review|
+            review["location_one"] = business_location[:location_one]
+            review["location_two"] = business_location[:location_two]
+            review["text"] = review["text"].strip # Remove leading/trailing spaces
+
+            # Adding puts statements to show each review
+            puts "Review:"
+            puts "Rating: #{review['rating']}"
+            puts "Text: #{review['text']}"
+            puts "Location One: #{review['location_one']}"
+            puts "Location Two: #{review['location_two']}"
+          end
+
+          limited_reviews = parsed_reviews.take(3)
+          limited_reviews.each do |review|
+            if review["rating"] == 5 && !reviews.any? { |r| r["id"] == review["id"] }
+              reviews << review
+            end
+          end
+        end
       end
 
-      # Retrieve reviews for the specified business alias
-      url = URI("https://api.yelp.com/v3/businesses/#{business_alias}/reviews")
-      request = Net::HTTP::Get.new(url)
-      request["Accept"] = 'application/json'
-      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
-      request["limit"] = "10" # You can adjust the limit as needed
+      redis.set("cached_yelp_reviews", JSON.generate(reviews))
+      redis.expire("cached_yelp_reviews", 30.days.to_i)
+      cached_reviews = redis.get("cached_yelp_reviews")
+      reviews = JSON.parse(cached_reviews) if cached_reviews
 
-      response = http.request(request)
-      body = response.read_body
-      parsed_reviews_response = JSON.parse(body)
+      if cached_reviews.present?
+        # Parse the JSON data into an array of hashes
+        users = JSON.parse(cached_reviews)
 
-      puts "Yelp API Response for reviews of business alias '#{business_alias}':"
-      puts parsed_reviews_response.inspect
+        # Call the class method to remove the user with name "Pdub .."
+        remove_user_by_name(users, 'Pdub ..')
 
-      if parsed_reviews_response["error"]
-        puts "Error: #{parsed_reviews_response['error']['description']}"
-        return { reviews: [] }
+        # Convert the updated data back to a JSON string
+        updated_reviews = JSON.generate(users)
+
+        return updated_reviews
       end
 
-      parsed_reviews = parsed_reviews_response["reviews"]
-
-      redis.set("cached_yelp_reviews_#{business_alias}", JSON.generate(parsed_reviews))
-      redis.expire("cached_yelp_reviews_#{business_alias}", 30.days.to_i)
-
-      return parsed_reviews
+      return { reviews: "No cached reviews" }
     rescue StandardError => e
       puts "Error in call_yelp: #{e.message}"
-      return { "error": e.message }
+      render json: { "error": e.message }
+    end
+      cached_data = redis.get('cached_yelp_reviews')
+      reviews = JSON.parse(cached_data) if cached_data
+
+      if cached_data.present?
+        # Parse the JSON data into an array of hashes
+        users = JSON.parse(cached_data)
+
+        # Call the class method to remove the user with name "Pdub .."
+        remove_user_by_name(users, 'Pdub ..')
+
+        # Convert the updated data back to a JSON string
+        updated_reviews = JSON.generate(users)
+
+        return updated_reviews
+      end
+
+      businesses = [
+        { alias: "orthopedic-associates-of-riverside" },
+      ]
+      http = Net::HTTP.new("api.yelp.com", 443)
+      http.use_ssl = true
+      reviews = []
+
+      businesses.each do |business|
+        business_url = URI("https://api.yelp.com/v3/businesses/#{business[:alias]}")
+        business_request = Net::HTTP::Get.new(business_url)
+        business_request["Accept"] = 'application/json'
+        business_request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+        business_response = http.request(business_request)
+        business_body = business_response.read_body
+        business_parsed_response = JSON.parse(business_body)
+        next if business_parsed_response["error"]
+        business_location = {
+          location_one: business[:location],
+          location_two: business_parsed_response['location']['address1']
+        }
+        url = URI("https://api.yelp.com/v3/businesses/#{business[:alias]}/reviews")
+        request = Net::HTTP::Get.new(url)
+        request["Accept"] = 'application/json'
+        request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+        request["limit"] = "3"
+        response = http.request(request)
+        body = response.read_body
+        parsed_response = JSON.parse(body)
+        if parsed_response["error"]
+          puts "Location: #{business[:location]}"
+          puts "Error: #{parsed_response['error']['description']}"
+          next
+        end
+        parsed_reviews = parsed_response["reviews"]
+        next if parsed_reviews.empty?
+        parsed_reviews.each do |review|
+          review["location_one"] = business_location[:location_one]
+          review["location_two"] = business_location[:location_two]
+          review["text"] = review["text"].strip # Remove leading/trailing spaces
+
+          # Adding puts statements to show each review
+          puts "Review:"
+          puts "Rating: #{review['rating']}"
+          puts "Text: #{review['text']}"
+          puts "Location One: #{review['location_one']}"
+          puts "Location Two: #{review['location_two']}"
+        end
+        limited_reviews = parsed_reviews.take(3)
+        limited_reviews.each do |review|
+          if review["rating"] == 5 && !reviews.any? { |r| r["id"] == review["id"] }
+            reviews << review
+          end
+        end
+      end
+
+      redis.set("cached_yelp_reviews", JSON.generate(reviews))
+      redis.expire("cached_yelp_reviews", 30.days.to_i)
+      cached_reviews = redis.get("cached_yelp_reviews")
+      reviews = JSON.parse(cached_reviews) if cached_reviews
+
+      if cached_reviews.present?
+        # Parse the JSON data into an array of hashes
+        users = JSON.parse(cached_reviews)
+
+        # Call the class method to remove the user with name "Pdub .."
+        remove_user_by_name(users, 'Pdub ..')
+
+        # Convert the updated data back to a JSON string
+        updated_reviews = JSON.generate(users)
+
+        return updated_reviews
+      end
+
+      return { reviews: "No cached reviews" }
+    rescue StandardError => e
+      puts "Error in call_yelp: #{e.message}"
+      render json: { "error": e.message }
     end
   end
 end
