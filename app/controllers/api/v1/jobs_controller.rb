@@ -5,8 +5,8 @@ class Api::V1::JobsController < ApplicationController
 
   def pull_yelp_cache
     csrf_token = form_authenticity_token
-    business_alias = 'orthopedic-associates-of-riverside-chicago' # Specify the business alias here
-    reviews = YelpCached.cached_yelp_reviews(business_alias)
+    search_term = 'orthopedic'
+    reviews = YelpCached.cached_yelp_reviews(search_term)
 
     render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
@@ -16,6 +16,7 @@ class Api::V1::JobsController < ApplicationController
 
   require 'redis'
   require 'json'
+  require 'uri'
   require 'net/http'
 
   class YelpCached
@@ -23,9 +24,9 @@ class Api::V1::JobsController < ApplicationController
       users.reject! { |user| user['user']['name'] == name }
     end
 
-    def self.cached_yelp_reviews(business_alias)
+    def self.cached_yelp_reviews(search_term)
       redis = Redis.new(url: ENV['REDIS_URL'])
-      cached_data = redis.get("cached_yelp_reviews_#{business_alias}")
+      cached_data = redis.get("cached_yelp_reviews_#{search_term}")
       reviews = JSON.parse(cached_data) if cached_data
 
       if cached_data.present?
@@ -44,16 +45,20 @@ class Api::V1::JobsController < ApplicationController
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
 
-      url = URI("https://api.yelp.com/v3/businesses/#{business_alias}")
+      url = URI("https://api.yelp.com/v3/businesses/search?term=#{URI.encode(search_term)}")
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
-      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
+      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}" # Print the Yelp API key for debugging
+      request["limit"] = "10" # You can adjust the limit as needed
+
+      puts "Yelp API Request Headers:"
+      puts request.inspect
 
       response = http.request(request)
       body = response.read_body
       parsed_response = JSON.parse(body)
 
-      puts "Yelp API Response for business alias '#{business_alias}':"
+      puts "Yelp API Response for search term '#{search_term}':"
       puts parsed_response.inspect
 
       if parsed_response["error"]
@@ -61,31 +66,12 @@ class Api::V1::JobsController < ApplicationController
         return { reviews: [] }
       end
 
-      # Retrieve reviews for the specified business alias
-      url = URI("https://api.yelp.com/v3/businesses/#{business_alias}/reviews")
-      request = Net::HTTP::Get.new(url)
-      request["Accept"] = 'application/json'
-      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
-      request["limit"] = "10" # You can adjust the limit as needed
+      # Extract and return the list of businesses from the search results
+      businesses = parsed_response["businesses"]
+      redis.set("cached_yelp_reviews_#{search_term}", JSON.generate(businesses))
+      redis.expire("cached_yelp_reviews_#{search_term}", 30.days.to_i)
 
-      response = http.request(request)
-      body = response.read_body
-      parsed_reviews_response = JSON.parse(body)
-
-      puts "Yelp API Response for reviews of business alias '#{business_alias}':"
-      puts parsed_reviews_response.inspect
-
-      if parsed_reviews_response["error"]
-        puts "Error: #{parsed_reviews_response['error']['description']}"
-        return { reviews: [] }
-      end
-
-      parsed_reviews = parsed_reviews_response["reviews"]
-
-      redis.set("cached_yelp_reviews_#{business_alias}", JSON.generate(parsed_reviews))
-      redis.expire("cached_yelp_reviews_#{business_alias}", 30.days.to_i)
-
-      return parsed_reviews
+      return businesses
     rescue StandardError => e
       puts "Error in call_yelp: #{e.message}"
       return { "error": e.message }
