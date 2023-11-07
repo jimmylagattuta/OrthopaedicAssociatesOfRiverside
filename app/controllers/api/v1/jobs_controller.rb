@@ -6,11 +6,13 @@ class Api::V1::JobsController < ApplicationController
   def pull_yelp_cache
     csrf_token = form_authenticity_token
     alias_name = 'orthopedic-associates-of-riverside-riverside' # Set the desired alias here
+    puts 1
     reviews = YelpCached.cached_yelp_reviews(alias_name, 8) # Limit the reviews to 8
-
+    puts 2
     render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
-    puts "Error in search_yelp_for_orthopedic: #{e.message}"
+    puts 3
+    puts "Error in search_yelp_for_orthopedic: #{e.message}" # This is puts 3
     render json: { "error": e.message }
   end
 
@@ -28,53 +30,62 @@ class Api::V1::JobsController < ApplicationController
       redis = Redis.new(url: ENV['REDIS_URL'])
       cached_data = redis.get("cached_yelp_reviews_#{alias_name}")
       reviews = JSON.parse(cached_data) if cached_data
-    
+      puts 4
+
       if cached_data.present?
         # Parse the JSON data into a hash
         data = JSON.parse(cached_data)
-    
+        puts 5
+
         # Call the class method to remove the user with name "Pdub .."
         remove_user_by_name(data['reviews'], 'Pdub ..')
-    
+        puts 6
+
         # Limit the reviews to the specified number
         data['reviews'] = data['reviews'].take(review_limit)
-    
+        puts 7
+
         # Convert the updated data back to a JSON string
         updated_reviews = JSON.generate(data)
-    
+        puts 8
+
         return updated_reviews
       end
-    
+
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
-    
+      puts 9
+
       url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit}") # Add review_limit to the URL
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
-    
+      puts 10
+
       response = http.request(request)
       body = response.read_body
       parsed_response = JSON.parse(body)
-    
-      puts "Yelp API Response for alias '#{alias_name}' reviews:"
+      puts 11
+
+      puts "Yelp API Response for alias '#{alias_name}' reviews:" # This is puts 12
       puts parsed_response.inspect
-    
+
       if parsed_response["error"]
-        puts "Error: #{parsed_response['error']['description']}"
+        puts "Error: #{parsed_response['error']['description']}" # This is puts 13
         return { reviews: [] }
       end
-    
+
       # Store the retrieved data in the cache
       redis.set("cached_yelp_reviews_#{alias_name}", JSON.generate(parsed_response))
       redis.expire("cached_yelp_reviews_#{alias_name}", 30.days.to_i)
-    
+
       # Limit the reviews to the specified number
       parsed_response['reviews'] = parsed_response['reviews'].take(review_limit)
-    
+      puts 12
+
       return parsed_response
     rescue StandardError => e
-      puts "Error in call_yelp: #{e.message}"
+      puts "Error in call_yelp: #{e.message}" # This is puts 14
       return { "error": e.message }
     end
   end
