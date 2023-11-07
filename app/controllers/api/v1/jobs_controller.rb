@@ -6,7 +6,8 @@ class Api::V1::JobsController < ApplicationController
   def pull_yelp_cache
     csrf_token = form_authenticity_token
     search_term = 'orthopedic'
-    reviews = YelpCached.cached_yelp_reviews(search_term)
+    location = 'Chicago, IL' # Specify the location here
+    reviews = YelpCached.cached_yelp_reviews(search_term, location)
 
     render json: { reviews: reviews, csrf_token: csrf_token }
   rescue StandardError => e
@@ -16,17 +17,18 @@ class Api::V1::JobsController < ApplicationController
 
   require 'redis'
   require 'json'
-  require 'cgi'
+  require 'uri'
   require 'net/http'
+  require 'cgi' # Include CGI to escape search_term and location
 
   class YelpCached
     def self.remove_user_by_name(users, name)
       users.reject! { |user| user['user']['name'] == name }
     end
 
-    def self.cached_yelp_reviews(search_term)
+    def self.cached_yelp_reviews(search_term, location)
       redis = Redis.new(url: ENV['REDIS_URL'])
-      cached_data = redis.get("cached_yelp_reviews_#{search_term}")
+      cached_data = redis.get("cached_yelp_reviews_#{search_term}_#{location}")
       reviews = JSON.parse(cached_data) if cached_data
 
       if cached_data.present?
@@ -46,7 +48,9 @@ class Api::V1::JobsController < ApplicationController
       http.use_ssl = true
 
       encoded_search_term = CGI.escape(search_term) # Use CGI.escape
-      url = URI("https://api.yelp.com/v3/businesses/search?term=#{encoded_search_term}")
+      encoded_location = CGI.escape(location)       # Use CGI.escape
+
+      url = URI("https://api.yelp.com/v3/businesses/search?term=#{encoded_search_term}&location=#{encoded_location}")
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
@@ -56,7 +60,7 @@ class Api::V1::JobsController < ApplicationController
       body = response.read_body
       parsed_response = JSON.parse(body)
 
-      puts "Yelp API Response for search term '#{search_term}':"
+      puts "Yelp API Response for search term '#{search_term}' in '#{location}':"
       puts parsed_response.inspect
 
       if parsed_response["error"]
@@ -66,8 +70,8 @@ class Api::V1::JobsController < ApplicationController
 
       # Extract and return the list of businesses from the search results
       businesses = parsed_response["businesses"]
-      redis.set("cached_yelp_reviews_#{search_term}", JSON.generate(businesses))
-      redis.expire("cached_yelp_reviews_#{search_term}", 30.days.to_i)
+      redis.set("cached_yelp_reviews_#{search_term}_#{location}", JSON.generate(businesses))
+      redis.expire("cached_yelp_reviews_#{search_term}_#{location}", 30.days.to_i)
 
       return businesses
     rescue StandardError => e
