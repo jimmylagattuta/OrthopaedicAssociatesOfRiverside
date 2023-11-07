@@ -16,7 +16,7 @@ class Api::V1::JobsController < ApplicationController
 
   require 'redis'
   require 'json'
-  require 'uri'
+  require 'cgi'
   require 'net/http'
 
   class YelpCached
@@ -45,7 +45,7 @@ class Api::V1::JobsController < ApplicationController
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
 
-      encoded_search_term = URI::Escape.encode(search_term) # Use URI::Escape.encode
+      encoded_search_term = CGI.escape(search_term) # Use CGI.escape
       url = URI("https://api.yelp.com/v3/businesses/search?term=#{encoded_search_term}")
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
