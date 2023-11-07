@@ -43,7 +43,7 @@ class Api::V1::JobsController < ApplicationController
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
     
-      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}")
+      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews")
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
@@ -52,7 +52,7 @@ class Api::V1::JobsController < ApplicationController
       body = response.read_body
       parsed_response = JSON.parse(body)
     
-      puts "Yelp API Response for alias '#{alias_name}':"
+      puts "Yelp API Response for alias '#{alias_name}' reviews:"
       puts parsed_response.inspect
     
       if parsed_response["error"]
@@ -60,31 +60,11 @@ class Api::V1::JobsController < ApplicationController
         return { reviews: [] }
       end
     
-      business_id = parsed_response["id"] # Get the business ID from the response
-    
-      # Make a separate request to fetch all 8 reviews using the business ID
-      url = URI("https://api.yelp.com/v3/businesses/#{business_id}/reviews")
-      request = Net::HTTP::Get.new(url)
-      request["Accept"] = 'application/json'
-      request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
-    
-      response = http.request(request)
-      body = response.read_body
-      parsed_reviews = JSON.parse(body)
-    
-      puts "Yelp API Response for alias '#{alias_name}' reviews:"
-      puts parsed_reviews.inspect
-    
-      if parsed_reviews["error"]
-        puts "Error: #{parsed_reviews['error']['description']}"
-        return { reviews: [] }
-      end
-    
       # Store the retrieved data in the cache
-      redis.set("cached_yelp_reviews_#{alias_name}", JSON.generate(parsed_reviews))
+      redis.set("cached_yelp_reviews_#{alias_name}", JSON.generate(parsed_response))
       redis.expire("cached_yelp_reviews_#{alias_name}", 30.days.to_i)
     
-      return parsed_reviews
+      return parsed_response
     rescue StandardError => e
       puts "Error in call_yelp: #{e.message}"
       return { "error": e.message }
