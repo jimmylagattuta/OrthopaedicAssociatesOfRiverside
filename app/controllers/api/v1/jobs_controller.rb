@@ -45,7 +45,8 @@ class Api::V1::JobsController < ApplicationController
       http = Net::HTTP.new("api.yelp.com", 443)
       http.use_ssl = true
 
-      url = URI("https://api.yelp.com/v3/businesses/search?term=#{URI.encode(search_term)}")
+      encoded_search_term = URI.encode_www_form_component(search_term)
+      url = URI("https://api.yelp.com/v3/businesses/search?term=#{encoded_search_term}")
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}" # Print the Yelp API key for debugging
