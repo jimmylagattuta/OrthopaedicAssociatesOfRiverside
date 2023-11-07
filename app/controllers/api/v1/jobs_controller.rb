@@ -41,7 +41,7 @@ class Api::V1::JobsController < ApplicationController
         puts 5
     
         # Call the class method to remove the user with name "Pdub .."
-        remove_user_by_name(data['reviews'], 'Pdub ..')
+        # remove_user_by_name(data['reviews'], 'Pdub ..')
         puts 6
     
         # Limit the reviews to the specified number
