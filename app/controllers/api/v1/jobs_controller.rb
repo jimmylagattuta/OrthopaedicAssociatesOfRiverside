@@ -3,7 +3,7 @@ class Api::V1::JobsController < ApplicationController
     render json: "Midland Orthopedic Group " * 1000
   end
 
-  def search_yelp_for_orthopedic
+  def pull_yelp_cache
     csrf_token = form_authenticity_token
     search_term = 'orthopedic'
     reviews = YelpCached.cached_yelp_reviews(search_term)
