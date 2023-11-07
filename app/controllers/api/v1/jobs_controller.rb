@@ -5,7 +5,7 @@ class Api::V1::JobsController < ApplicationController
 
   def pull_yelp_cache
     csrf_token = form_authenticity_token
-    search_term = 'orthopaedic'
+    search_term = 'orthopedic'
     location = 'Riverside, IL' # Specify the location here
     reviews = YelpCached.cached_yelp_reviews(search_term, location)
 
