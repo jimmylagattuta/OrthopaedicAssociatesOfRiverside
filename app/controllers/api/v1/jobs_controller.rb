@@ -35,6 +35,8 @@ class Api::V1::JobsController < ApplicationController
       if cached_data.present?
         # Parse the JSON data into a hash
         data = JSON.parse(cached_data)
+        puts "data"
+        puts data.inspect
         puts 5
 
         # Call the class method to remove the user with name "Pdub .."
@@ -56,7 +58,7 @@ class Api::V1::JobsController < ApplicationController
       http.use_ssl = true
       puts 9
 
-      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit}") # Add review_limit to the URL
+      url = URI("https://api.yelp.com/v3/businesses/#{alias_name}/reviews?limit=#{review_limit.to_s}") # Add review_limit to the URL
       request = Net::HTTP::Get.new(url)
       request["Accept"] = 'application/json'
       request["Authorization"] = "Bearer #{ENV['REACT_APP_YELP_API_KEY']}"
