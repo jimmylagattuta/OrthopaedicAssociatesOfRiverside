@@ -523,7 +523,7 @@ img {
 }
 
 .submenu-list {
-    min-width: 244px;
+    min-width: 264px;
     display: grid;
     align-items: center;
     grid-gap: 0px; /* Adjust the gap between items */
@@ -872,7 +872,11 @@ img {
 
 .grid-item {
     padding: 22px;
-    width: calc(100% / 3);
+    margin: 10px;
+    width: calc(90% / 4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .physician-header {
@@ -921,7 +925,7 @@ img {
 
 .physician-right {
     width: 60%;
-    padding: 50px 50px 15px 50px;
+    padding: 50px 50px 15px;
 }
 
 .specialties {
@@ -2589,6 +2593,9 @@ display: none;
 
 }
 @media (max-width: 1015px) {
+    .grid-item {
+        width: calc(90% / 2);
+    }
     .expertise-name {
         font-size: 0.7rem;
     }
@@ -2727,7 +2734,7 @@ display: none;
     }
 
     .grid-item {
-        width: calc(100% / 2);
+        width: calc(90% / 2);
     }
 
     .physician-left {
