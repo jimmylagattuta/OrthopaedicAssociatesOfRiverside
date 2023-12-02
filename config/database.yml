@@ -21,20 +21,22 @@ default: &default
 
 development:
   <<: *default
-  database: la_orthos
+  database: riverside_orthos
   username: postgres
-  password: <%= ENV["LA_ORTHOS_DATABASE_PASSWORD"] %>
-  host: localhost
+  password: <%= ENV["RIVERSIDE_ORTHOS_DATABASE_PASSWORD"] %>
+  host: db
   port: 5432
 
 test:
   <<: *default
-  database: la_orthos_test
+  database: riverside_orthos_test
   username: postgres
-  password: <%= ENV["LA_ORTHOS_DATABASE_PASSWORD"] %>
+  password: <%= ENV["RIVERSIDE_ORTHOS_DATABASE_PASSWORD"] %>
 
 production:
   <<: *default
-  database: la_orthos_production
+  database: riverside_orthos_production
   username: postgres
-  password: <%= ENV["LA_ORTHOS_DATABASE_PASSWORD"] %>
+  password: <%= ENV["RIVERSIDE_ORTHOS_DATABASE_PASSWORD"] %>
+  host: <%= ENV["RIVERSIDE_ORTHOS_DATABASE_HOST"] %>
+  port: <%= ENV["RIVERSIDE_ORTHOS_DATABASE_PORT"] %>

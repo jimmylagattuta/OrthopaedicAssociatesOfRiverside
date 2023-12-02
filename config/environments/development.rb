@@ -1,6 +1,8 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.force_ssl = false
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -15,6 +17,10 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable server timing
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = {
+    'Cache-Control' => 'public, max-age=3600'
+  }
   config.server_timing = true
 
   # Enable/disable caching. By default caching is disabled.
