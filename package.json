@@ -5,10 +5,10 @@
     "node": "18.13.0"
   },
   "scripts": {
-    "clean": "rm -rf public",
+    "clean": "rm -rf client/build",
     "build": "npm install --prefix client && npm run build --prefix client",
-    "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "npm run clean && npm run build && npm run deploy"
+    "deploy": "cp -a client/build/. /orthopaedicasssociatesofriverside/app/public/",
+    "docker-build": "npm run clean && npm run build && npm run deploy"
   },
   "dependencies": {
     "@loadable/component": "^5.15.3",

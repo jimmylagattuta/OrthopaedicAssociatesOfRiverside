@@ -17,7 +17,10 @@ Rails.application.routes.draw do
       
     end
   end
-  get "/static/*path", to: "fallback#index", constraints: { path: %r{[^/]+\.[^/]+} }
+  # get "/static/*path", to: "fallback#index", constraints: { path: %r{[^/]+\.[^/]+} }
+  get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
+
+
 
 
 
