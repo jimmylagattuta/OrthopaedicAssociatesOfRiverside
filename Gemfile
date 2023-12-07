@@ -1,7 +1,9 @@
+# remote: Error: Platform 'ruby' version '3.2.2' is unsupported. Supported versions: 2.5.8, 2.6.6, 2.7.1, 2.7.2, 2.7.6, 2.7.7, 3.0.0, 3.0.3, 3.0.5, 3.1.1, 3.1.3, 2.5.8, 2.6.6, 2.7.1, 2.7.2, 2.7.6, 2.7.7, 3.0.0, 3.0.3, 3.0.5, 3.1.1, 3.1.3
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.0'
+ruby '3.1.3'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.5"
