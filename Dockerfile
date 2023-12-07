@@ -23,7 +23,6 @@ COPY . /app/
 WORKDIR /app/client
 RUN npm install
 RUN npm run build
-
 # Move the React build files into the desired location within the Rails app directory
 WORKDIR /app/public
 RUN cp -R /app/client/build/. .
