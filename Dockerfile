@@ -31,6 +31,8 @@ RUN cp -R /app/client/build/. .
 WORKDIR /app
 
 # Expose port 3000 to the Docker host, so it can be accessed from the outside
-EXPOSE 3000
-# Start the Rails application
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Expose port 80 to the Docker host
+EXPOSE 80
+
+# Start the Rails application on port 80
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "80"]
