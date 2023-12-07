@@ -33,6 +33,5 @@ WORKDIR /app
 
 # Expose port 3000 to the Docker host, so it can be accessed from the outside
 EXPOSE 3000
-
 # Start the Rails application
 CMD ["rails", "server", "-b", "0.0.0.0"]
