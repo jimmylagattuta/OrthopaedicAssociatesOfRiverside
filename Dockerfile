@@ -7,6 +7,9 @@ RUN apt-get update -qq && apt-get install -y nodejs npm
 # Set the working directory in the container
 WORKDIR /app
 
+# Create necessary directories with correct permissions
+RUN mkdir -p /opt/ruby && chmod -R 777 /opt/ruby
+
 # Copy the Gemfile and Gemfile.lock into the container
 COPY Gemfile Gemfile.lock ./
 
