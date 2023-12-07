@@ -1,22 +1,37 @@
-# Stage 1: Build the React client
-FROM node:18.17.0 as client-builder
-WORKDIR /usr/src/app/client
-COPY client/package*.json ./
-RUN npm install
-COPY client .
-RUN npm run build
-# Stage 2: Build the Rails app
+# Use the official Ruby image as a base image
 FROM ruby:3.2.2
-WORKDIR /usr/src/app
+
+# Install Node.js, Yarn, and npm
+RUN apt-get update -qq && apt-get install -y nodejs npm
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Create necessary directories with correct permissions
+RUN mkdir -p /opt/ruby && chmod -R 777 /opt/ruby
+
+# Copy the Gemfile and Gemfile.lock into the container
 COPY Gemfile Gemfile.lock ./
+
+# Install gems
 RUN bundle install
-# Install Node.js
-RUN apt-get update && apt-get install -y nodejs
-# Install Node.js using nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN /bin/bash -c "source ~/.nvm/nvm.sh && nvm install 18.17.0"
-COPY . .
-# Copy the built React app from the client-builder stage
-COPY --from=client-builder /usr/src/app/client/build /usr/src/app/public
+
+# Copy the Rails application code into the container
+COPY . /app/
+
+# Set up the React client
+WORKDIR /app/client
+RUN npm install
+RUN npm run build
+
+# Move the React build files into the desired location within the Rails app directory
+WORKDIR /app/public
+RUN cp -R /app/client/build/. .
+
+# Move back to the Rails app directory
+WORKDIR /app
+
+# Expose port 3000 to the Docker host, so it can be accessed from the outside
 EXPOSE 3000
+# Start the Rails application
 CMD ["rails", "server", "-b", "0.0.0.0"]
