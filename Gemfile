@@ -3,8 +3,8 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
-# ruby '3.2.2'
+# ruby '3.1.3'
+ruby '3.2.2'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.5"
 gem 'dotenv-rails', groups: [:development, :test]
@@ -36,17 +36,42 @@ group :development do
   # gem "spring"
 end
 
+
+
+# Push Code Azure
+# bundle install for gemfile.lock with ruby 3.2.2
+# docker login
+# docker-compose down -v
+# docker rmi orthopaedicasssociatesofriverside:latest
+# docker build -t orthopaedicasssociatesofriverside .
+# docker-compose up
+# docker tag orthopaedicasssociatesofriverside:latest jimmylagattuta/orthopaedicasssociatesofriverside:latest
+# docker push jimmylagattuta/orthopaedicasssociatesofriverside:latest
+# az webapp config container set --name RiversideOrthopaedics --resource-group WebApp_Resource_Group --docker-custom-image-name jimmylagattuta/orthopaedicasssociatesofriverside:latest
+
+
+
+
+
+
+# Push the re-tagged image to Docker Hub
 # docker-compose exec app bash
 
 # docker-compose restart app
 
-# docker-compose down -v
 
-# docker-compose up
 
-# docker rmi orthopaedicasssociatesofriverside:latest
+# docker build -t orthopaedicasssociatesofriverside .
 
-# docker build -t orthopaedicasssociatesofriverside:latest .
+# docker tag orthopaedicasssociatesofriverside riversidecontainerregistry.azurecr.io/orthopaedicasssociatesofriverside:latest
+# docker push riversidecontainerregistry.azurecr.io/orthopaedicasssociatesofriverside:latest
+# docker build -t your-image-name .
+# docker tag your-image-name your-container-registry-url/your-image-name:tag
+# docker push your-container-registry-url/your-image-name:tag
+# docker tag orthopaedicasssociatesofriverside:latest jimmylagattuta/orthopaedicasssociatesofriverside:latest
+# docker login
+# docker push jimmylagattuta/orthopaedicasssociatesofriverside:latest
+
 
 # The Docker Compose file you've provided and the multi-stage Dockerfile I suggested serve different purposes. Your Docker Compose file is used to define and run multi-container Docker applications, specifying how different services (in this case, your app and database) should be configured and connected.
 
