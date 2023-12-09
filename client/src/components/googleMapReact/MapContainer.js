@@ -232,7 +232,7 @@ const Marker = ({
         </>
     );
 };
-
+console.log('process.env.REACT_APP_GOOGLE_MAPS_REACT_KEY', process.env.REACT_APP_GOOGLE_MAPS_REACT_KEY);
 const MapContainer = () => {
     const [centered, setCentered] = useState(null);
     const [zoomed, setZoomed] = useState(null);
